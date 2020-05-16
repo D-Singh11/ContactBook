@@ -2,11 +2,31 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 class ListContacts extends Component {
-    render() {
-        console.log(this.props);
 
+    state = {
+        query: 'dd'
+    }
+
+    updateQuery= (event) => {
+        this.setState({
+            query : event.target.value.trim()
+        });
+    }
+
+    render() {
         return (
-            <ol className='contact-list'>
+            <div className="list-contacts">
+                {JSON.stringify(this.state)}
+                <div className='list-contacts-top'>
+                    <input 
+                        className='search-contacts'
+                        type='text'
+                        placeholder='serach a contact'
+                        value={this.state.query}
+                        onChange={this.updateQuery}
+                    />
+                </div>
+                <ol className='contact-list'>
                 {this.props.contacts.map(contact => (
                     <li key={contact.id} className='contact-list-item'>
                         <div className="contact-avatar"
@@ -26,6 +46,7 @@ class ListContacts extends Component {
 
                 ))}
             </ol>
+            </div>
         )
     }
 }
