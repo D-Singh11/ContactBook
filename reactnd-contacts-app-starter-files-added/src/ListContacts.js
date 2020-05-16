@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 class ListContacts extends Component {
 
     state = {
-        query: 'dd'
+        query: ''
     }
 
     updateQuery= (event) => {
@@ -14,6 +14,15 @@ class ListContacts extends Component {
     }
 
     render() {
+
+        const {query} = this.state;
+        const {contacts, removeContact } = this.props;
+
+        const showingContacts = query === '' 
+                                ? contacts 
+                                : contacts.filter(contact => {
+                                    return contact.name.toLowerCase().includes(query.toLowerCase())
+                                });
         return (
             <div className="list-contacts">
                 {JSON.stringify(this.state)}
@@ -22,12 +31,12 @@ class ListContacts extends Component {
                         className='search-contacts'
                         type='text'
                         placeholder='serach a contact'
-                        value={this.state.query}
+                        value={query}
                         onChange={this.updateQuery}
                     />
                 </div>
                 <ol className='contact-list'>
-                {this.props.contacts.map(contact => (
+                {showingContacts.map(contact => (
                     <li key={contact.id} className='contact-list-item'>
                         <div className="contact-avatar"
                             style={{
@@ -39,7 +48,7 @@ class ListContacts extends Component {
                             <p>{contact.handle}</p>
                         </div>
 
-                        <button className="contact-remove" onClick={() => {this.props.removeContact(contact)}}>
+                        <button className="contact-remove" onClick={() => {removeContact(contact)}}>
                             remove
                             </button>
                     </li>
